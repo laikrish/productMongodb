@@ -1,5 +1,7 @@
 package com.capgemini.productapp.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.capgemini.productapp.entity.Product;
@@ -63,6 +66,34 @@ public class ProductController {
 			// logged the exception
 		}
 		return new ResponseEntity<Product>(HttpStatus.NOT_FOUND);
+	}
+	@GetMapping("/product/name")
+	public ResponseEntity<List<Product>> findProductByName(@RequestParam String productName)
+			throws ProductNotFoundException {
+		System.out.println("controller");
+		return new ResponseEntity<List<Product>>(productService.findProductByName(productName), HttpStatus.OK);
+
+	}
+
+	@GetMapping("/product/category")
+	public ResponseEntity<List<Product>> findProductByCategory(@RequestParam String productCategory)
+			throws ProductNotFoundException {
+		return new ResponseEntity<List<Product>>(productService.findProductByCategory(productCategory), HttpStatus.OK);
+
+	}
+
+	@GetMapping("/product/category/price")
+	public ResponseEntity<List<Product>> findProductByCategoryAndPrice(@RequestParam String productCategory, double maxprice,
+			double minprice) throws ProductNotFoundException {
+		return new ResponseEntity<List<Product>>(
+				productService.findProductByCategoryAndPrice(productCategory,maxprice, minprice), HttpStatus.OK);
+
+	}
+	@GetMapping("/product/price")
+	public ResponseEntity<List<Product>> findProductByPrice(@RequestParam double productPrice)
+			throws ProductNotFoundException {
+		return new ResponseEntity<List<Product>>(productService.findProductByPrice(productPrice), HttpStatus.OK);
+
 	}
 
 }
